@@ -1,34 +1,112 @@
 import 'package:flutter/material.dart';
+import 'package:hm_shop/viewmodels/home.dart';
 
 class HmMoreList extends StatefulWidget {
-  HmMoreList({Key? key}) : super(key: key);
+  // 推荐列表
+  final List<GoodDetailItem> recommendList;
+
+  HmMoreList({Key? key, required this.recommendList}) : super(key: key);
 
   @override
   _HmMoreListState createState() => _HmMoreListState();
 }
 
 class _HmMoreListState extends State<HmMoreList> {
+  Widget _getChildren(int index) {
+    return Container(
+      child: Column(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(8),
+              topRight: Radius.circular(8),
+            ),
+            child: AspectRatio(
+              aspectRatio: 1.0,
+              child: Image.network(
+                widget.recommendList[index].picture,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return Image.asset(
+                    "lib/assets/home_cmd_inner.png",
+                    fit: BoxFit.cover,
+                  );
+                },
+              ),
+            ),
+          ),
+          SizedBox(height: 6),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            child: Text(
+              widget.recommendList[index].name,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(color: Colors.black, fontSize: 14),
+            ),
+          ),
+          SizedBox(height: 6),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text.rich(
+                  TextSpan(
+                    text: "¥${widget.recommendList[index].price}",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w800,
+                    ),
+                    children: [
+                      TextSpan(text: " "),
+                      TextSpan(
+                        text: "${widget.recommendList[index].price}",
+                        style: TextStyle(
+                          decoration: TextDecoration.lineThrough,
+                          color: Colors.grey,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Text(
+                  "${widget.recommendList[index].payCount}人付款",
+                  style: TextStyle(color: Colors.grey, fontSize: 12),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    // 使用SliverPadding添加左右内边距
+    // 必须是Sliver家族的组件
     return SliverPadding(
-      padding: EdgeInsets.symmetric(horizontal: 10), // 左右各10像素内边距
+      padding: EdgeInsets.symmetric(horizontal: 10),
       sliver: SliverGrid.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          mainAxisSpacing: 10,
-          crossAxisSpacing: 10,
-          childAspectRatio: 1,
-        ),
-        // itemCount: 20, // 添加商品数量
-        itemBuilder: (context, index) {
-          return Container(
-            decoration: BoxDecoration(
-              color: Colors.blue,
-              borderRadius: BorderRadius.circular(5),
+        itemCount: widget.recommendList.length,
+        gridDelegate:
+            // 网格是两列
+            SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisSpacing: 10,
+              crossAxisSpacing: 10,
+              childAspectRatio: 0.7,
             ),
-            alignment: Alignment.center,
-            child: Text("更多商品$index", style: TextStyle(color: Colors.white)),
+        itemBuilder: (BuildContext context, int index) {
+          return Container(
+            // padding: EdgeInsets.symmetric(horizontal: 10),
+            decoration: BoxDecoration(
+              color: const Color.fromRGBO(255, 255, 255, 1),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: _getChildren(index),
           );
         },
       ),

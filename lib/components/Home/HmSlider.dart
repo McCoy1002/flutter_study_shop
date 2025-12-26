@@ -21,7 +21,7 @@ class _HmSliderState extends State<HmSlider> {
     return CarouselSlider(
       carouselController: _carouselSliderController,
       items: List.generate(widget.bannerList.length, (index) {
-        return Image.asset(
+        return Image.network(
           widget.bannerList[index].imgUrl,
           fit: BoxFit.cover,
           width: MediaQuery.of(context).size.width,
@@ -31,7 +31,7 @@ class _HmSliderState extends State<HmSlider> {
         viewportFraction: 1.0,
         autoPlay: true,
         autoPlayInterval: Duration(seconds: 5),
-        aspectRatio: 640 / 480,
+        aspectRatio: 640 / 420,
         onPageChanged: (index, reason) {
           setState(() {
             _currentIndex = index;
@@ -50,14 +50,14 @@ class _HmSliderState extends State<HmSlider> {
       child: Container(
         padding: EdgeInsets.all(10),
         decoration: BoxDecoration(
-          color: const Color.fromRGBO(255, 255, 255, 0.8),
+          color: const Color.fromRGBO(255, 255, 255, 1),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Row(
           children: [
-            Icon(Icons.search, color: Colors.black),
+            Icon(Icons.search, color: Colors.grey),
             SizedBox(width: 10),
-            Text("搜索...", style: TextStyle(color: Colors.black)),
+            Text("搜索...", style: TextStyle(color: Colors.grey)),
           ],
         ),
       ),
@@ -92,7 +92,7 @@ class _HmSliderState extends State<HmSlider> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(3),
                 color: _currentIndex == index
-                    ? Colors.blue
+                    ? const Color.fromARGB(255, 255, 141, 1)
                     : Colors.white.withOpacity(0.4),
               ),
             ),

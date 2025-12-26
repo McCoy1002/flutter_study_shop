@@ -61,7 +61,7 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      backgroundColor: Colors.grey[100],
       // 主体内容(SafeArea避开安全区组件)
       body: SafeArea(
         child: IndexedStack(
